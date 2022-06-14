@@ -1,9 +1,12 @@
 import './App.scss';
+import { Comments } from './components/Comments/Comments';
+import { Input } from './components/Input/Input';
 
-function App() {
+const App = () => {
   return (
     <div className="App">
-
+      <Input />
+      <Comments/>
     </div>
   );
 }
