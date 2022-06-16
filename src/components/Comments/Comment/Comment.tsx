@@ -1,10 +1,10 @@
 import React from "react";
 import { compareToNow } from "../../../lib/utils/dateAPI";
-import { commentDefinedType } from "../../StoreProvider/StoreProvider-types";
+import { commentType } from "../../StoreProvider/StoreProvider-types";
 import { Rating } from "./Rating/Rating";
 
-const Comment = ({ name, avatar, message, date, rating, id }: commentDefinedType) => {
-    const dateDiff = compareToNow(date);
+const Comment = ({ name, avatar, message, date, rating, id }: commentType) => {
+    const dateDiff: string = compareToNow(date);
 
     return (
         <div>
@@ -13,6 +13,7 @@ const Comment = ({ name, avatar, message, date, rating, id }: commentDefinedType
             </div>
             <div>
                 <div>{name}</div>
+                {rating <= -10 && <div>Открыть комментарий</div>}
                 <div>{message}</div>
                 <div>
                     <div>{dateDiff}</div>

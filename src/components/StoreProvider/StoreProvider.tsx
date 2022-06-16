@@ -1,39 +1,42 @@
-import { createContext, useReducer, useState } from "react";
-import { commentDefinedType, commentsType, commentType, StateType } from "./StoreProvider-types";
+import { createContext, useReducer } from "react";
+import { actionTypes, addCommentActionType, commentsType, commentType, setCommentRatingActionType, StateType } from "./StoreProvider-types";
 
 const defaultState: StateType = {
     comments: {},
-    addComment: (comment) => {
+    addComment: () => {
         console.log("func is undef");
     },
-    setCommentRating: (commentId, rating) => {
+    setCommentRating: () => {
         console.log("func is undef");
     },
 };
 
 export const StoreContext = createContext(defaultState);
 
-export const StoreProvider = (props: any) => {
-    const commentsReducer = (state: commentsType, action: any) => {
+export const StoreProvider = (props: { children: React.ReactElement }) => {
+    const commentsReducer = (state: commentsType, action: actionTypes) => {
         switch (action.type) {
             case "addComment":
                 return { ...state, [action.comment.id]: action.comment };
             case "setRating":
-                return { ...state, [action.commentId]: { ...state[action.commentId], rating: action.rating } }; // state[action.commentId] = { ...state[action.commentId] }), (state[action.commentId].rating = [action.rating])
+                return { ...state, [action.commentId]: { ...state[action.commentId], rating: action.rating } };
+            default:
+                return state;
         }
-        return state;
     };
 
     const [comments, dispatchComments] = useReducer(commentsReducer, defaultState.comments);
 
-    const addComment = (comment: commentType) => {
+    function addComment(comment: commentType) {
         comment.id = Object.keys(comments).length;
-        dispatchComments({ type: "addComment", comment });
-    };
+        let action: addCommentActionType = { type: "addComment", comment };
+        dispatchComments(action);
+    }
 
-    const setCommentRating = (commentId: number | undefined, rating: number) => {
-        dispatchComments({ type: "setRating", commentId, rating });
-    };
+    function setCommentRating(commentId: number, rating: number) {
+        let action: setCommentRatingActionType = { type: "setRating", commentId, rating };
+        dispatchComments(action);
+    }
 
     return <StoreContext.Provider value={{ comments, addComment, setCommentRating }}>{props.children}</StoreContext.Provider>;
 };

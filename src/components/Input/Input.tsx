@@ -3,19 +3,14 @@ import { StoreContext } from "../StoreProvider/StoreProvider";
 import { commentType } from "../StoreProvider/StoreProvider-types";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import { validateAvatar, validateEmail, validateName, validateText } from "../../lib/utils/formValidation";
-
-export type Values = {
-    name: string;
-    email: string;
-    avatar: string;
-    text: string;
-};
+import { valuesType } from "./Input-types";
 
 export const Input = () => {
     const addComment = useContext(StoreContext).addComment;
 
-    let handleSubmit = (values: any, { setSubmitting }: FormikHelpers<Values>) => {
-        let comment: commentType = {
+    const handleSubmit = (values: valuesType, { setSubmitting }: FormikHelpers<valuesType>) => {
+        const comment: commentType = {
+            id: 0,
             avatar: values.avatar,
             name: values.name,
             email: values.email,
@@ -25,7 +20,6 @@ export const Input = () => {
         };
 
         addComment(comment);
-
         setSubmitting(false);
     };
 
@@ -54,8 +48,6 @@ export const Input = () => {
                     </Form>
                 )}
             </Formik>
-
-            {/* <button onClick={handleSubmit}></button> */}
         </div>
     );
 };

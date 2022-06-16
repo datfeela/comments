@@ -1,14 +1,4 @@
 export type commentType = {
-    id?: number;
-    name: string;
-    email?: string;
-    avatar: string | undefined;
-    message: string;
-    date: Date;
-    rating: number;
-};
-
-export type commentDefinedType = {
     id: number;
     name: string;
     email: string;
@@ -18,20 +8,27 @@ export type commentDefinedType = {
     rating: number;
 };
 
-// export type dateType = {
-//     year: number;
-//     month: number;
-//     day: number;
-//     hour: number;
-//     minutes: number;
-// };
-
 export interface commentsType {
-    [key: number]: commentDefinedType;
+    [key: number]: commentType;
 }
 
 export type StateType = {
     comments: commentsType;
     addComment: (comment: commentType) => void;
     setCommentRating: (commentId: number, rating: number) => void;
+};
+
+//action types
+
+export type actionTypes = addCommentActionType | setCommentRatingActionType;
+
+export type addCommentActionType = {
+    type: "addComment";
+    comment: commentType;
+};
+
+export type setCommentRatingActionType = {
+    type: "setRating";
+    commentId: number;
+    rating: number;
 };

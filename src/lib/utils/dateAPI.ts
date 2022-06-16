@@ -1,6 +1,6 @@
 export const compareToNow = (date: Date) => {
-    const dateDiffNum = +new Date() - +date;
-    let dateDiff = "только что";
+    const dateDiffNum: number = +new Date() - +date;
+    let dateDiff: string = "только что";
 
     //86400000 - кол-во мс в сутках, 3600000 - в часе, 60000 - в минуте
     if (dateDiffNum >= 86400000) dateDiff = `${Math.floor(dateDiffNum / 86400000)} дней назад`;
