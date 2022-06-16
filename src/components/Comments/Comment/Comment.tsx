@@ -1,15 +1,14 @@
 export const Comment = (props: any) => {
     let { name, avatar, message, date, rating } = props.data;
 
-    return <div>
+    return (
         <div>
-            {name} {avatar}
+            <div>
+                {name} {avatar}
+            </div>
+            <div>{message}</div>
+            <div>{date.year}</div>
+            <div>{rating}</div>
         </div>
-        <div>
-            {message}
-        </div>
-        <div>
-            {date} {rating}
-        </div>
-    </div>;
+    );
 };

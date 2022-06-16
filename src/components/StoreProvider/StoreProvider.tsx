@@ -14,7 +14,6 @@ export const StoreProvider = (props: any) => {
     const [comments, setComments] = useState(defaultState.comments);
 
     const addComment = (comment: commentType) => {
-        //comment avatar - https://via.placeholder.com/100x100.png?text=Avatar
         comment.id = comments.length;
         setComments([comment, ...comments]);
     };
