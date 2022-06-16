@@ -20,7 +20,7 @@ export function validateAvatar(value: string) {
     let error: string | undefined;
     if (!value) {
         error = "Обязательное поле";
-    } else if (!/^(https?:\/\/)?[A-Z]+\.[A-Z]+\.[A-Z]+\/.+$/i.test(value)) {
+    } else if (!/^(https?:\/\/)?([A-Z]+\.)?[A-Z]+\.[A-Z]+\/.+$/i.test(value)) {
         error = "Некорректный URL адрес";
     }
     return error;

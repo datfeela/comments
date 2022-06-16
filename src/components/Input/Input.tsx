@@ -3,7 +3,6 @@ import { StoreContext } from "../StoreProvider/StoreProvider";
 import { commentType } from "../StoreProvider/StoreProvider-types";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import { validateAvatar, validateEmail, validateName, validateText } from "../../lib/utils/formValidation";
-import { getDate } from "../../lib/utils/dateAPI";
 
 export type Values = {
     name: string;
@@ -20,7 +19,7 @@ export const Input = () => {
             avatar: values.avatar,
             name: values.name,
             email: values.email,
-            date: getDate(),
+            date: new Date(),
             message: values.text,
             rating: 0,
         };

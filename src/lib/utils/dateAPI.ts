@@ -1,14 +1,11 @@
-import { dateType } from "./../../components/StoreProvider/StoreProvider-types";
-export const getDate = () => {
-    const now = new Date();
+export const compareToNow = (date: Date) => {
+    const dateDiffNum = +new Date() - +date;
+    let dateDiff = "только что";
 
-    const date: dateType = {
-        year: now.getFullYear(),
-        month: now.getMonth(),
-        day: now.getDate(),
-        hour: now.getHours(),
-        minutes: now.getMinutes(),
-    };
+    //86400000 - кол-во мс в сутках, 3600000 - в часе, 60000 - в минуте
+    if (dateDiffNum >= 86400000) dateDiff = `${Math.floor(dateDiffNum / 86400000)} дней назад`;
+    if (dateDiffNum < 86400000 && dateDiffNum >= 3600000) dateDiff = `${Math.floor(dateDiffNum / 3600000)} ч. назад`;
+    if (dateDiffNum < 3600000 && dateDiffNum >= 60000) dateDiff = `${Math.floor(dateDiffNum / 60000)} мин. назад`;
 
-    return date;
+    return dateDiff;
 };
