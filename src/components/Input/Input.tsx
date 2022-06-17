@@ -5,6 +5,10 @@ import { Form, Formik, FormikHelpers } from "formik";
 import { validateEmail, validateText, validateURL } from "../../lib/utils/formValidation";
 import { errorsType, valuesType } from "./Input-types";
 import { Button, TextField } from "@mui/material";
+import styledC from "styled-components";
+import { styled } from "@mui/system";
+import { Theme } from "../../lib/styled/variables";
+import SendIcon from "@mui/icons-material/Send";
 
 export const Input = () => {
     const addComment = useContext(StoreContext).addComment;
@@ -18,7 +22,7 @@ export const Input = () => {
         return errors;
     };
 
-    const handleSubmit = (values: valuesType, { setSubmitting }: FormikHelpers<valuesType>) => {
+    const handleSubmit = (values: valuesType,  formikHelpers: FormikHelpers<valuesType>) => {
         const comment: commentType = {
             id: 0,
             avatar: values.avatar,
@@ -29,11 +33,12 @@ export const Input = () => {
             rating: 0,
         };
         addComment(comment);
-        setSubmitting(false);
+        formikHelpers.resetForm();
+        formikHelpers.setSubmitting(false);
     };
 
     return (
-        <div style={{ minHeight: "10px", marginBottom: "10px" }}>
+        <Wrap>
             <Formik
                 initialValues={{
                     name: "",
@@ -46,67 +51,110 @@ export const Input = () => {
             >
                 {({ errors, touched, values, handleChange }) => (
                     <Form>
-                        <TextField
-                            name="name"
-                            value={values.name}
-                            onChange={handleChange}
-                            error={touched.name && Boolean(errors.name)}
-                            helperText={touched.name && errors.name}
-                            // validate={validateName}
-                            id="outlined-basic"
-                            label="Ваше имя"
-                            variant="outlined"
-                            // component={TextField}
-                        />
-                        {/* {errors.name && touched.name && <div>{errors.name}</div>} */}
-                        <TextField
-                            name="email"
-                            value={values.email}
-                            onChange={handleChange}
-                            error={touched.email && Boolean(errors.email)}
-                            helperText={touched.email && errors.email}
-                            // helperText={touched.email && validateEmail}
-                            id="outlined-basic"
-                            label="Ваш адрес электронной почты"
-                            variant="outlined"
-                            // component={TextField}
-                        />
-                        {/* {errors.email && touched.email && <div>{errors.email}</div>} */}
-                        <TextField
-                            name="avatar"
-                            value={values.avatar}
-                            onChange={handleChange}
-                            error={touched.avatar && Boolean(errors.avatar)}
-                            helperText={touched.avatar && errors.avatar}
-                            autoComplete="off"
-                            // validate={validateAvatar}
-                            id="outlined-basic"
-                            label="Ссылка на изображение(аватар)"
-                            variant="outlined"
-                            // component={TextField}
-                        />
-                        {/* {errors.avatar && touched.avatar && <div>{errors.avatar}</div>} */}
-                        <TextField
-                            name="text"
-                            value={values.text}
-                            onChange={handleChange}
-                            error={touched.text && Boolean(errors.text)}
-                            helperText={touched.text && errors.text}
-                            // validate={validateText}
-                            // component={TextField}
-                            id="outlined-multiline-static"
-                            label="Написать комментарий..."
-                            multiline
-                            rows={4}
-                        />
-                        {/* <Fab color="primary" aria-label="add"></Fab> */}
-                        <Button color="primary" variant="contained" fullWidth type="submit">
-                            Отправить комментарий
-                        </Button>
+                        <InnerTopWrap>
+                            <TextField
+                                name="name"
+                                value={values.name}
+                                onChange={handleChange}
+                                error={touched.name && Boolean(errors.name)}
+                                helperText={touched.name && errors.name}
+                                id="outlined-basic"
+                                label="Ваше имя"
+                                variant="outlined"
+                                size="small"
+                            />
+                            <TextField
+                                name="email"
+                                value={values.email}
+                                onChange={handleChange}
+                                error={touched.email && Boolean(errors.email)}
+                                helperText={touched.email && errors.email}
+                                id="outlined-basic"
+                                label="Ваш адрес электронной почты"
+                                variant="outlined"
+                                size="small"
+                            />
+                            <TextField
+                                name="avatar"
+                                value={values.avatar}
+                                onChange={handleChange}
+                                error={touched.avatar && Boolean(errors.avatar)}
+                                helperText={touched.avatar && errors.avatar}
+                                autoComplete="off"
+                                id="outlined-basic"
+                                label="Ссылка на изображение(аватар)"
+                                variant="outlined"
+                                size="small"
+                            />
+                        </InnerTopWrap>
+                        <InnerBottomWrap>
+                            <StyledTextarea
+                                name="text"
+                                value={values.text}
+                                onChange={handleChange}
+                                error={touched.text && Boolean(errors.text)}
+                                helperText={touched.text && errors.text}
+                                id="outlined-multiline-flexible"
+                                label="Написать комментарий..."
+                                multiline
+                                maxRows={4}
+                                size="small"
+                            />
+                            <StyledButton color="primary" variant="contained" type="submit">
+                                {/* Отправить комментарий */}
+                                <SendIcon />
+                            </StyledButton>
+                        </InnerBottomWrap>
                     </Form>
                 )}
             </Formik>
-            
-        </div>
+        </Wrap>
     );
 };
+
+const Wrap = styledC.div`
+    background-color: #fff;
+    border-bottom: 1px solid ${Theme.greyColor};
+    padding: 20px;
+
+    @media (max-width: 600px) {
+        padding: 12px 10px;
+    }
+`;
+
+const InnerTopWrap = styledC.div`
+    display: grid;
+    grid-template-columns: 2fr 3fr 4fr;
+    grid-column-gap: 10px;
+    align-items: start;
+    margin-bottom: 15px;
+
+    @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+        grid-row-gap: 10px;
+        margin-bottom: 10px;
+    }
+`;
+
+const InnerBottomWrap = styledC.div`
+    display: grid;
+    grid-template-columns: 1fr 37px;
+    grid-column-gap: 10px;
+    align-items: end;
+`;
+
+const StyledTextarea = styled(
+    TextField,
+    {}
+)({
+    width: "100%",
+});
+
+const StyledButton = styled(
+    Button,
+    {}
+)({
+    height: "37px",
+    width: "37px",
+    minWidth: "37px",
+});

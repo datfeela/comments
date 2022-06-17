@@ -1,32 +1,75 @@
 import React from "react";
+import styled from "styled-components";
+import { Theme } from "../../../lib/styled/variables";
 import { compareToNow } from "../../../lib/utils/dateAPI";
-import { MuiAccordion } from "../../mui-components/Accordion.styled";
 import { commentType } from "../../StoreProvider/StoreProvider-types";
+import { Content } from "./Content/Content";
 import { Rating } from "./Rating/Rating";
 
-const Comment = ({ name, avatar, message, date, rating, id }: commentType) => {
+const Comment = ({ name, email, avatar, message, date, rating, id }: commentType) => {
     const dateDiff: string = compareToNow(date);
 
     return (
-        <div>
-            <div className="avatar">
-                <img style={{ height: "50px", width: "50px" }} src={avatar} alt="avatar" />
-            </div>
+        <Wrap>
+            <AvatarWrap>
+                <Avatar src={avatar} alt="avatar" />
+            </AvatarWrap>
             <div>
-                <div>{name}</div>
-                {/* {rating <= -10 && <div>Открыть комментарий</div>} */}
-
-                {rating <= -10 && <MuiAccordion header="Открыть комментарий" headerExpanded="Свернуть комментарий" details={message} />}
-                {rating > -10 && <div>{message}</div>}
-                <div>
-                    <div>{dateDiff}</div>
-                    <div>
-                        <Rating rating={rating} id={id} />
-                    </div>
-                </div>
+                <Header>
+                    <NameSpan>{name}</NameSpan>
+                    <EmailSpan>@{email}</EmailSpan>
+                </Header>
+                <Content rating={rating} message={message}></Content>
+                <Footer>
+                    <DateSpan>{dateDiff}</DateSpan>
+                    <Rating rating={rating} id={id} />
+                </Footer>
             </div>
-        </div>
+        </Wrap>
     );
 };
 
 export default React.memo(Comment);
+
+const Wrap = styled.div`
+    display: grid;
+    grid-template-columns: 61px 1fr;
+    margin-bottom: 10px;
+`;
+
+const AvatarWrap = styled.div`
+    margin-right: 11px;
+`;
+
+const Avatar = styled.img`
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+`;
+
+const Header = styled.div`
+    margin-bottom: 5px;
+`;
+
+const NameSpan = styled.span`
+    margin-right: 3px;
+    font-size: 15px;
+    font-weight: 600;
+    color: ${Theme.blueFontColor};
+`;
+
+const EmailSpan = styled.span`
+    color: ${Theme.greyFontColor};
+`;
+
+const Footer = styled.div`
+    padding-bottom: 8px;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    border-bottom: 1px solid ${Theme.lightGreyColor};
+`;
+
+const DateSpan = styled.span`
+    color: ${Theme.greyFontColor};
+`;
