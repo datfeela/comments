@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import { MouseEvent, useContext } from "react";
 import { StoreContext } from "../../../StoreProvider/StoreProvider";
 
@@ -12,12 +13,12 @@ export const Rating = ({ rating, id }: { rating: number, id: number }) => {
     return (
         <div>
             <div>{rating}</div>
-            <button id="button+" onClick={handleButtonClick}>
+            <Button variant="contained" id="button+" onClick={handleButtonClick}>
                 +
-            </button>
-            <button id="button-" onClick={handleButtonClick}>
+            </Button>
+            <Button variant="contained" id="button-" onClick={handleButtonClick}>
                 -
-            </button>
+            </Button>
         </div>
     );
 };

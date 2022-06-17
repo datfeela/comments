@@ -1,11 +1,3 @@
-export function validateName(value: string) {
-    let error: string | undefined;
-    if (!value) {
-        error = "Обязательное поле";
-    }
-    return error;
-}
-
 export function validateEmail(value: string) {
     let error: string | undefined;
     if (!value) {
@@ -16,12 +8,12 @@ export function validateEmail(value: string) {
     return error;
 }
 
-export function validateAvatar(value: string) {
+export function validateURL(value: string) {
     let error: string | undefined;
     if (!value) {
         error = "Обязательное поле";
     } else if (!/^(https?:\/\/)?([A-Z]+\.)?[A-Z]+\.[A-Z]+\/.+$/i.test(value)) {
-        error = "Некорректный URL адрес";
+        error = 'Некорректный URL-адрес. Введите URL-адрес в формате "https://site.com/..."';
     }
     return error;
 }

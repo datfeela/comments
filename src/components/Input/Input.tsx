@@ -1,12 +1,22 @@
 import { useContext } from "react";
 import { StoreContext } from "../StoreProvider/StoreProvider";
 import { commentType } from "../StoreProvider/StoreProvider-types";
-import { Field, Form, Formik, FormikHelpers } from "formik";
-import { validateAvatar, validateEmail, validateName, validateText } from "../../lib/utils/formValidation";
-import { valuesType } from "./Input-types";
+import { Form, Formik, FormikHelpers } from "formik";
+import { validateEmail, validateText, validateURL } from "../../lib/utils/formValidation";
+import { errorsType, valuesType } from "./Input-types";
+import { Button, TextField } from "@mui/material";
 
 export const Input = () => {
     const addComment = useContext(StoreContext).addComment;
+
+    const validateForm = (values: valuesType) => {
+        const errors: errorsType = {};
+        validateURL(values.avatar) !== undefined && (errors.avatar = validateURL(values.avatar));
+        validateEmail(values.email) !== undefined && (errors.email = validateEmail(values.email));
+        validateText(values.name) !== undefined && (errors.name = validateText(values.name));
+        validateText(values.text) !== undefined && (errors.text = validateText(values.text));
+        return errors;
+    };
 
     const handleSubmit = (values: valuesType, { setSubmitting }: FormikHelpers<valuesType>) => {
         const comment: commentType = {
@@ -18,7 +28,6 @@ export const Input = () => {
             message: values.text,
             rating: 0,
         };
-
         addComment(comment);
         setSubmitting(false);
     };
@@ -33,21 +42,71 @@ export const Input = () => {
                     text: "",
                 }}
                 onSubmit={handleSubmit}
+                validate={validateForm}
             >
-                {({ errors, touched }) => (
+                {({ errors, touched, values, handleChange }) => (
                     <Form>
-                        <Field name="name" placeholder="Ваше имя" validate={validateName} />
-                        {errors.name && touched.name && <div>{errors.name}</div>}
-                        <Field name="email" placeholder="Ваш адрес электронной почты" validate={validateEmail} />
-                        {errors.email && touched.email && <div>{errors.email}</div>}
-                        <Field name="avatar" placeholder="Ссылка на изображение(аватар)" validate={validateAvatar} />
-                        {errors.avatar && touched.avatar && <div>{errors.avatar}</div>}
-                        <Field name="text" placeholder="Написать комментарий..." component="textarea" validate={validateText} />
-                        {errors.text && touched.text && <div>{errors.text}</div>}
-                        <button type="submit">Отправить комментарий</button>
+                        <TextField
+                            name="name"
+                            value={values.name}
+                            onChange={handleChange}
+                            error={touched.name && Boolean(errors.name)}
+                            helperText={touched.name && errors.name}
+                            // validate={validateName}
+                            id="outlined-basic"
+                            label="Ваше имя"
+                            variant="outlined"
+                            // component={TextField}
+                        />
+                        {/* {errors.name && touched.name && <div>{errors.name}</div>} */}
+                        <TextField
+                            name="email"
+                            value={values.email}
+                            onChange={handleChange}
+                            error={touched.email && Boolean(errors.email)}
+                            helperText={touched.email && errors.email}
+                            // helperText={touched.email && validateEmail}
+                            id="outlined-basic"
+                            label="Ваш адрес электронной почты"
+                            variant="outlined"
+                            // component={TextField}
+                        />
+                        {/* {errors.email && touched.email && <div>{errors.email}</div>} */}
+                        <TextField
+                            name="avatar"
+                            value={values.avatar}
+                            onChange={handleChange}
+                            error={touched.avatar && Boolean(errors.avatar)}
+                            helperText={touched.avatar && errors.avatar}
+                            autoComplete="off"
+                            // validate={validateAvatar}
+                            id="outlined-basic"
+                            label="Ссылка на изображение(аватар)"
+                            variant="outlined"
+                            // component={TextField}
+                        />
+                        {/* {errors.avatar && touched.avatar && <div>{errors.avatar}</div>} */}
+                        <TextField
+                            name="text"
+                            value={values.text}
+                            onChange={handleChange}
+                            error={touched.text && Boolean(errors.text)}
+                            helperText={touched.text && errors.text}
+                            // validate={validateText}
+                            // component={TextField}
+                            id="outlined-multiline-static"
+                            label="Написать комментарий..."
+                            multiline
+                            rows={4}
+                        />
+                        {/* <Fab color="primary" aria-label="add"></Fab> */}
+                        <Button color="primary" variant="contained" fullWidth type="submit">
+                            Отправить комментарий
+                        </Button>
                     </Form>
                 )}
             </Formik>
+            
         </div>
     );
 };
